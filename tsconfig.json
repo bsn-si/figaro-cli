@@ -1,0 +1,24 @@
+{
+   "compilerOptions": {
+      "lib": [
+         "es5",
+         "es6"
+      ],
+      "moduleResolution": "node",
+      "module": "commonjs",
+      "target": "ES2020",
+
+      "rootDir": "./src",
+      "outDir": "./dist",
+      
+      "allowSyntheticDefaultImports": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "esModuleInterop": true,
+      "strictNullChecks": false,
+      "resolveJsonModule": true,
+      "importHelpers": true,
+      "skipLibCheck": true,
+      "sourceMap": true
+   }
+}
