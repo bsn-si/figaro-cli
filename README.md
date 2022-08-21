@@ -4,7 +4,7 @@
 > **Use at your own risk**.
 
 <h1 align="center">
-    🎟️ ✨ figaro CLI Client 🎁 👛
+    🎟️ ✨ Figaro CLI Client 🎁 👛
 </h1>
 
 figaro smartcontract CLI management tool.
