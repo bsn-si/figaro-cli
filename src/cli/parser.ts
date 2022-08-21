@@ -1,5 +1,6 @@
-import { getOption, getArgument } from "./options"
+import { getOption } from "./options"
 import { Command } from "commander"
+const { assign } = Object
 
 export interface CliMethod {
   options: Record<string, any>
@@ -31,6 +32,7 @@ export function parse(argv: string[]): CliMethod {
   const program = new Command()
     .name("figaro-cli")
     .description("Tool for interact with figaro - manage requests & delivery")
+    .option("--json", "Output all results as json")
     .version("0.1.0")
 
   const sender = new Command("sender")
@@ -130,6 +132,7 @@ export function parse(argv: string[]): CliMethod {
       new Command("balance")
         .description("Get account balance")
         .addOption(getOption("secretKey"))
+        .addOption(getOption("address"))
         .action(setParsed("common")),
     )
     .addCommand(
@@ -154,5 +157,9 @@ export function parse(argv: string[]): CliMethod {
     .addCommand(common)
 
   program.parse(argv)
+  
+  // merge global options
+  assign(parsed.options, program.optsWithGlobals())
+
   return parsed
 }

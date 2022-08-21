@@ -12,14 +12,14 @@ export const config = {
   trace: true,
   // default endpoint address to node
   apiUrl: "http://127.0.0.1:26657",
-  // default beck32 address prefix
+  // default bech32 address prefix
   addressPrefix: "wasm",
   // default gas price for calls
   gasPrice: "0.25",
   // display options
   display: {
     // show and log all addresses for user & contracts in bech32 format
-    beck32: true,
+    bech32: true,
   },
   // amount units name
   units: {

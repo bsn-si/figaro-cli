@@ -11,10 +11,11 @@ const cmdArguments = {
 const cmdOptions = {
   contractAddress: ["--contract <bech32>", "contract address in bech32", validator.address],
   tokenAddress: ["--token <bech32>", "cw20 token contract address in bech32", validator.address],
-  roughLocationFrom: ["--location-from <location>", "location rectangle for rough location. Format like [[lng, lat],[lng, lat]]", validator.roughLocation],
-  roughLocationTo: ["--location-to <location>", "location rectangle for rough location. Format like [[lng, lat],[lng, lat]]", validator.roughLocation],
-  exactLocationFrom: ["--location-from <location>", "exact location coordinates. Format like [lng, lat]", validator.exactLocation],
-  exactLocationTo: ["--location-to <location>", "exact location coordinates. Format like [lng, lat]", validator.exactLocation],
+  address: ["--address <bech32>", "address in bech32", validator.address],
+  roughLocationFrom: ["--location-from <location>", "location rectangle for rough location. Format like 'lng,lat|lng,lat'", validator.roughLocation],
+  roughLocationTo: ["--location-to <location>", "location rectangle for rough location. Format like 'lng,lat|lng,lat'", validator.roughLocation],
+  exactLocationFrom: ["--location-from <location>", "exact location coordinates. Format like 'lng,lat'", validator.exactLocation],
+  exactLocationTo: ["--location-to <location>", "exact location coordinates. Format like 'lng,lat'", validator.exactLocation],
   confirmPublicKey: ["--confirm-public <key>", "confirmation secp256k1 public key in hex format, for verify signature", validator.publicKey],
   depositAmount: ["--deposit <int>", "needed deposit from courier for delivery", validator.amount],
   paymentAmount: ["--payment <int>", "needed payment from sender for delivery", validator.amount],
@@ -35,9 +36,9 @@ export function getOption(name: string, isOptional = false) {
 
   if (isOptional) {
     option.optional = true
-  } /* else {
-    option.optional = false
-  } */
+  } else {
+    option.required = true
+  }
 
   if (validator) {
     option.argParser(validator)

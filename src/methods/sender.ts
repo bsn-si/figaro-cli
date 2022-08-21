@@ -1,4 +1,4 @@
-import { fmtList, getAddressFromRawSigner, getContractClient, payToContract } from "../utils"
+import { fmtList, getAddressFromRawSigner, getContractClient, log, payToContract } from "../utils"
 import { Secp256k1Wallet } from "@cosmjs/amino"
 import chalk from "chalk"
 import BN from "bn.js"
@@ -14,11 +14,14 @@ interface InstantiateOptions {
   token: string
   deposit: BN
   payment: BN
+
+  json?: boolean
 }
 
 interface MakePaymentOptions {
   secret: Secp256k1Wallet
   contract: string
+  json?: boolean
 }
 
 interface SetDetailsOptions {
@@ -28,11 +31,14 @@ interface SetDetailsOptions {
   locationFrom: [number, number],
   locationTo: [number, number],
   comment: string
+  
+  json?: boolean
 }
 
 interface ParcelIssuedOptions {
   secret: Secp256k1Wallet
   contract: string
+  json?: boolean
 }
 
 export async function instantiate({
@@ -44,6 +50,7 @@ export async function instantiate({
   deposit,
   payment,
   token,
+  json,
 }: InstantiateOptions) {
   const address = getAddressFromRawSigner(signer)
   const client = await getContractClient(signer)
@@ -56,7 +63,7 @@ export async function instantiate({
     token_address: token,
   }
 
-  const response = await client.instantiate(
+  const { contractAddress, transactionHash, gasUsed } = await client.instantiate(
     address,
     contractCodeId,
     msg,
@@ -64,28 +71,28 @@ export async function instantiate({
     "auto",
   )
 
-  console.log(chalk.bold.bgBlue("Contract Instantiated"))
+  !json && log(chalk.bold.bgBlue("Contract Instantiated"))
 
-  console.log(
+  log(
     fmtList([
-      ["Contract Address", response.contractAddress],
-      ["Transaction Hash", response.transactionHash],
-      ["Gas Used", response.gasUsed.toString()],
-    ]),
+      ["Contract Address", contractAddress],
+      ["Transaction Hash", transactionHash],
+      ["Gas Used", gasUsed.toString()],
+    ], json),
   )
 }
 
-export async function make_payment({ secret: signer, contract }: MakePaymentOptions) {
+export async function make_payment({ secret: signer, contract, json }: MakePaymentOptions) {
   const { transactionHash, gasUsed, logs } = await payToContract(signer, contract, "payment")
-  console.log(chalk.bold.bgBlue("Delivery make payment"))
+  !json && log(chalk.bold.bgBlue("Delivery make payment"))
 
-  console.log(
+  log(
     fmtList([
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
       ["Logs", JSON.stringify(logs, null, 2)],
-    ]),
+    ], json),
   )
 }
 
@@ -96,6 +103,8 @@ export async function set_details({
   locationFrom,
   locationTo,
   comment,
+
+  json,
 }: SetDetailsOptions) {
   const address = getAddressFromRawSigner(signer)
   const client = await getContractClient(signer)
@@ -112,18 +121,19 @@ export async function set_details({
 
   const { gasUsed, transactionHash, logs } = await client.execute(address, contract, msg, "auto")
   
-  console.log(chalk.bold.bgBlue("Set department and destination details"))
-  console.log(
+  !json && log(chalk.bold.bgBlue("Set department and destination details"))
+
+  log(
     fmtList([
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
       ["Logs", JSON.stringify(logs, null, 2)],
-    ]),
+    ], json),
   )
 }
 
-export async function approve_parcel_issued({ secret: signer, contract }: ParcelIssuedOptions) {
+export async function approve_parcel_issued({ secret: signer, contract, json }: ParcelIssuedOptions) {
   const address = getAddressFromRawSigner(signer)
   const client = await getContractClient(signer)
 
@@ -134,14 +144,14 @@ export async function approve_parcel_issued({ secret: signer, contract }: Parcel
     "auto",
   )
 
-  console.log(chalk.bold.bgBlue("Parcel delivered to courier"))
+  !json && log(chalk.bold.bgBlue("Parcel delivered to courier"))
 
-  console.log(
+  log(
     fmtList([
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
       ["Logs", JSON.stringify(logs, null, 2)],
-    ]),
+    ], json),
   )
 }

@@ -1,9 +1,7 @@
+import { u8aToHex, hexToU8a } from "@polkadot/util"
 import { InvalidArgumentError } from "commander"
-import { Secp256k1Wallet } from "@cosmjs/amino"
-import { hexToU8a } from "@polkadot/util/hex"
 import BN from "bn.js"
 
-import { config } from "../config"
 import { getSignerFromSecretHex } from "../utils"
 
 export const isValidAddress = (address: string) => {
@@ -52,27 +50,30 @@ export const secretKey = async (value: string) => {
 
 export const roughLocation = (value: string): [[number, number], [number, number]] => {
   try {
-    const parsed = JSON.parse(value)
-    let [start, end] = parsed as any
+    const regexp = new RegExp(/^(.*?)\|(.*?)$/g)
+    const [matched] = Array.from(value.trim().matchAll(regexp))
 
-    if (!Array.isArray(start) || !Array.isArray(end)) {
-      throw new InvalidArgumentError("Invalid format.")
-    }
-
-    start = exactLocation(start as any)
-    end = exactLocation(end as any)
+    const start = exactLocation(matched[1])
+    const end = exactLocation(matched[2])
 
     return [start, end]
   } catch (error) {
     throw new InvalidArgumentError(
-      "Expect json location rect like: [[lng,lat], [lng,lat]].\n" + error.message,
+      "Expect json location rect like: '1.0,1.0|2.0,2.0'\n" + error.message,
     )
   }
 }
 
 export const exactLocation = (value: string | [number, number]): [number, number] => {
   try {
-    const location = typeof value === "string" ? JSON.parse(value) : value
+    const regexp = new RegExp(/^([+-]?\d+(\.\d+)),([+-]?\d+(\.\d+))$/g)
+
+    const location = typeof value === "string" ? ((() => {
+      const [ matched ] = Array.from(value.trim().matchAll(regexp))
+      const lng = parseFloat(matched[1])
+      const lat = parseFloat(matched[3])
+      return [lng, lat]
+    })()) : value
 
     if (typeof location[0] !== "number" || typeof location[1] !== "number") {
       throw new InvalidArgumentError("Lng & Lat must be a number")
@@ -93,16 +94,22 @@ export const exactLocation = (value: string | [number, number]): [number, number
     return [lng, lat]
   } catch (error) {
     throw new InvalidArgumentError(
-      "Expect json location rect like: [lng, lat].\n" + error.message,
+      "Expect json location rect like: '1.0,1.0'.\n" + error.message,
     )
   }
 }
 
 export const publicKey = (value: string) => {
   try {
-    return value
+    const bytes = hexToU8a(value)
+
+    if (bytes.length !== 33) {
+      throw new Error()
+    }
+ 
+    return u8aToHex(bytes, undefined, false)
   } catch (error) {
-    throw new InvalidArgumentError("error")
+    throw new InvalidArgumentError("Accepted only 33 bytes secp256k1 public key in hex")
   }
 }
 

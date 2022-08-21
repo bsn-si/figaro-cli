@@ -14,36 +14,42 @@ import {
   getPassword,
   getKeyPair,
   fmtList,
+  log,
 } from "../utils"
 
 interface BalanceOptions {
   secret: Secp256k1Wallet
   contract: string
+  address?: string
+  json?: boolean
 }
 
 interface UploadOptions {
   secret: Secp256k1Wallet
+  json?: boolean
 }
 
 interface CancelDeliveryOptions {
   secret: Secp256k1Wallet
   contract: string
+  json?: boolean
 }
 
 interface InfoQueryOptions {
   query: "token_info" | "status" | "courier" | "funds" | "locations"
   secret: Secp256k1Wallet
   contract: string
+  json?: boolean
 }
 
 export async function mnemonic_to_hex() {
-  console.log(chalk.bold.bgBlue("Please enter mnemonic to convert"))
+  log(chalk.bold.bgBlue("Please enter mnemonic to convert"))
 
   const mnemonic = await getPassword()
   const seed = await getSeedFromMnemonic(mnemonic.trim())
   const keypair = await getKeyPair(seed)
 
-  console.log(
+  log(
     fmtList([
       // ["Mnemonic", mnemonic],
       ["Private Key", u8aToHex(keypair.privkey)],
@@ -52,31 +58,34 @@ export async function mnemonic_to_hex() {
   )
 }
 
-export async function balance({ secret: signer }: BalanceOptions) {
-  const address = getAddressFromRawSigner(signer)
+export async function balance({ secret: signer, address, json }: BalanceOptions) {
+  const signerAddress = getAddressFromRawSigner(signer)
   const client = await getBaseClient(signer)
 
+  const _address = address || signerAddress 
+
   const { denom: stakeDenom, amount: stakeAmount } = await client.getBalance(
-    address,
+    _address,
     config.units.stake,
   )
   const { denom: feeDenom, amount: feeAmount } = await client.getBalance(
-    address,
+    _address,
     config.units.fee,
   )
 
-  console.log(
+  log(
     fmtList([
-      ["Address", address],
+      ["Address", _address],
 
       ["Balance Stake", `${stakeAmount} ${stakeDenom}`],
       ["Balance Fee", `${feeAmount} ${feeDenom}`],
-    ]),
+    ], json),
   )
 }
 
 export async function upload_contract({
   secret: signer,
+  json,
 }: UploadOptions) {
   const address = getAddressFromRawSigner(signer)
   const client = await getContractClient(signer)
@@ -85,14 +94,14 @@ export async function upload_contract({
   const wasm = file.slice(file.byteOffset, file.byteOffset + file.byteLength)
   const response = await client.upload(address, wasm, "auto")
 
-  console.log(chalk.bold.bgBlue("Contract uploaded"))
+  !json && log(chalk.bold.bgBlue("Contract uploaded"))
 
-  console.log(
+  log(
     fmtList([
       ["Code Id", response.codeId.toString()],
       ["Transaction Hash", response.transactionHash],
       ["Gas Used", response.gasUsed.toString()],
-    ]),
+    ], json),
   )
 }
 
@@ -100,22 +109,23 @@ export async function info({
   secret: signer,
   contract,
   query,
+  json,
 }: InfoQueryOptions) {
   const client = await getContractClient(signer)
   const response = await client.queryContractSmart(contract, { [query]: {} })
 
-  console.log(chalk.bold.bgBlue(`Contract "${contract}" ${query} info`))
+  !json && log(chalk.bold.bgBlue(`Contract "${contract}" ${query} info`))
 
-  console.log(
+  log(
     fmtList([
       ["Contract", contract],
       ["Query", query],
       ["Result", JSON.stringify(response, null, 2)],
-    ]),
+    ], json),
   )
 }
 
-export async function cancel_delivery({ secret: signer, contract }: CancelDeliveryOptions) {
+export async function cancel_delivery({ secret: signer, contract, json }: CancelDeliveryOptions) {
   const address = getAddressFromRawSigner(signer)
   const client = await getContractClient(signer)
 
@@ -126,14 +136,14 @@ export async function cancel_delivery({ secret: signer, contract }: CancelDelive
     "auto",
   )
 
-  console.log(chalk.bold.bgBlue("Delivery was cancelled"))
+  !json && log(chalk.bold.bgBlue("Delivery was cancelled"))
 
-  console.log(
+  log(
     fmtList([
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
       ["Logs", JSON.stringify(logs, null, 2)],
-    ]),
+    ], json),
   )
 }
