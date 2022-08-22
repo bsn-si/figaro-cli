@@ -27,6 +27,11 @@ const cmdOptions = {
   owner: ["--owner <bech32>", "owner address in bech32", validator.address],
   amount: ["--amount <int>", "amount of funds", validator.amount],
   comment: ["--comment <string>", "comment for courier", validator.comment],
+  initial_balances: ["--initial-balances <addresses_with_balance>", "Accounts with initial balances. In format 'address_amount,addr_amount'", validator.initialBalances],
+  minter: ["--minter <address_with_cap>", "mint option. In format 'address_amount'", validator.mint],
+  decimals: ["--decimals <int>", "decimals option of cw20 instantiate", validator.integer],
+  symbol: ["--symbol", "token symbol", validator.cw20symbol],
+  name: ["--name", "token name", validator.cw20name],
 }
 
 export function getOption(name: string, isOptional = false) {

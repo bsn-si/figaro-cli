@@ -42,6 +42,18 @@ interface InfoQueryOptions {
   json?: boolean
 }
 
+interface InstantiateCw20Options {
+  secret: Secp256k1Wallet
+  contractCodeId?: number
+  json?: boolean
+
+  initialBalances: { address: number; amount: string }[]
+  minter: { address: string; cap: string }
+  decimals: number
+  symbol: string
+  name: string
+}
+
 export async function mnemonic_to_hex() {
   log(chalk.bold.bgBlue("Please enter mnemonic to convert"))
 
@@ -62,7 +74,7 @@ export async function balance({ secret: signer, address, json }: BalanceOptions)
   const signerAddress = getAddressFromRawSigner(signer)
   const client = await getBaseClient(signer)
 
-  const _address = address || signerAddress 
+  const _address = address || signerAddress
 
   const { denom: stakeDenom, amount: stakeAmount } = await client.getBalance(
     _address,
@@ -74,19 +86,19 @@ export async function balance({ secret: signer, address, json }: BalanceOptions)
   )
 
   log(
-    fmtList([
-      ["Address", _address],
+    fmtList(
+      [
+        ["Address", _address],
 
-      ["Balance Stake", `${stakeAmount} ${stakeDenom}`],
-      ["Balance Fee", `${feeAmount} ${feeDenom}`],
-    ], json),
+        ["Balance Stake", `${stakeAmount} ${stakeDenom}`],
+        ["Balance Fee", `${feeAmount} ${feeDenom}`],
+      ],
+      json,
+    ),
   )
 }
 
-export async function upload_contract({
-  secret: signer,
-  json,
-}: UploadOptions) {
+export async function upload_contract({ secret: signer, json }: UploadOptions) {
   const address = getAddressFromRawSigner(signer)
   const client = await getContractClient(signer)
 
@@ -97,35 +109,40 @@ export async function upload_contract({
   !json && log(chalk.bold.bgBlue("Contract uploaded"))
 
   log(
-    fmtList([
-      ["Code Id", response.codeId.toString()],
-      ["Transaction Hash", response.transactionHash],
-      ["Gas Used", response.gasUsed.toString()],
-    ], json),
+    fmtList(
+      [
+        ["Code Id", response.codeId.toString()],
+        ["Transaction Hash", response.transactionHash],
+        ["Gas Used", response.gasUsed.toString()],
+      ],
+      json,
+    ),
   )
 }
 
-export async function info({
-  secret: signer,
-  contract,
-  query,
-  json,
-}: InfoQueryOptions) {
+export async function info({ secret: signer, contract, query, json }: InfoQueryOptions) {
   const client = await getContractClient(signer)
   const response = await client.queryContractSmart(contract, { [query]: {} })
 
   !json && log(chalk.bold.bgBlue(`Contract "${contract}" ${query} info`))
 
   log(
-    fmtList([
-      ["Contract", contract],
-      ["Query", query],
-      ["Result", JSON.stringify(response, null, 2)],
-    ], json),
+    fmtList(
+      [
+        ["Contract", contract],
+        ["Query", query],
+        ["Result", JSON.stringify(response, null, 2)],
+      ],
+      json,
+    ),
   )
 }
 
-export async function cancel_delivery({ secret: signer, contract, json }: CancelDeliveryOptions) {
+export async function cancel_delivery({
+  secret: signer,
+  contract,
+  json,
+}: CancelDeliveryOptions) {
   const address = getAddressFromRawSigner(signer)
   const client = await getContractClient(signer)
 
@@ -139,11 +156,69 @@ export async function cancel_delivery({ secret: signer, contract, json }: Cancel
   !json && log(chalk.bold.bgBlue("Delivery was cancelled"))
 
   log(
-    fmtList([
-      ["Contract Address", contract],
-      ["Transaction Hash", transactionHash],
-      ["Gas Used", gasUsed.toString()],
-      ["Logs", JSON.stringify(logs, null, 2)],
-    ], json),
+    fmtList(
+      [
+        ["Contract Address", contract],
+        ["Transaction Hash", transactionHash],
+        ["Gas Used", gasUsed.toString()],
+        ["Logs", logs],
+      ],
+      json,
+    ),
   )
+}
+
+export async function cw20_instantiate({
+  secret: signer,
+  contractCodeId,
+  json,
+
+  initialBalances,
+  decimals,
+  symbol,
+  minter,
+  name,
+}: InstantiateCw20Options) {
+  const msg = {
+    initial_balances: initialBalances,
+    decimals,
+    symbol,
+    minter,
+    name,
+  }
+
+  const address = getAddressFromRawSigner(signer)
+  const client = await getContractClient(signer)
+
+  let uploadResponse
+  if (!contractCodeId) {
+    const file = await fs.readFile(path.join(__dirname, "../assets/cw20_base.wasm"))
+    const wasm = file.slice(file.byteOffset, file.byteOffset + file.byteLength)
+    const response = await client.upload(address, wasm, "auto")
+
+    contractCodeId = response.codeId
+    uploadResponse = response
+  }
+
+  const { contractAddress, transactionHash, gasUsed } = await client.instantiate(
+    address,
+    contractCodeId,
+    msg,
+    "cw20",
+    "auto",
+  )
+
+  !json && log(chalk.bold.bgBlue("Cw20 Contract Instantiated"))
+
+  const result: any = [
+    ["Contract Address", contractAddress],
+    ["Transaction Hash", transactionHash],
+    ["Gas Used", gasUsed.toString()],
+  ]
+
+  if (uploadResponse) {
+    result.push(["Upload Code", uploadResponse])
+  }
+
+  log(fmtList(result, json))
 }

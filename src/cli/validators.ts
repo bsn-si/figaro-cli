@@ -68,12 +68,15 @@ export const exactLocation = (value: string | [number, number]): [number, number
   try {
     const regexp = new RegExp(/^([+-]?\d+(\.\d+)),([+-]?\d+(\.\d+))$/g)
 
-    const location = typeof value === "string" ? ((() => {
-      const [ matched ] = Array.from(value.trim().matchAll(regexp))
-      const lng = parseFloat(matched[1])
-      const lat = parseFloat(matched[3])
-      return [lng, lat]
-    })()) : value
+    const location =
+      typeof value === "string"
+        ? (() => {
+            const [matched] = Array.from(value.trim().matchAll(regexp))
+            const lng = parseFloat(matched[1])
+            const lat = parseFloat(matched[3])
+            return [lng, lat]
+          })()
+        : value
 
     if (typeof location[0] !== "number" || typeof location[1] !== "number") {
       throw new InvalidArgumentError("Lng & Lat must be a number")
@@ -106,7 +109,7 @@ export const publicKey = (value: string) => {
     if (bytes.length !== 33) {
       throw new Error()
     }
- 
+
     return u8aToHex(bytes, undefined, false)
   } catch (error) {
     throw new InvalidArgumentError("Accepted only 33 bytes secp256k1 public key in hex")
@@ -122,6 +125,54 @@ export const contractQuery = (value: string) => {
 }
 
 export const comment = (value: string) => {
+  try {
+    return value
+  } catch (error) {
+    throw new InvalidArgumentError("error")
+  }
+}
+
+export const initialBalances = (value: string) => {
+  try {
+    const regexp = /^(\w+)_(\d+)$/g
+    const slice = value.split(",")
+    const accounts = []
+
+    for (const expr of slice) {
+      const [matched] = Array.from(expr.matchAll(regexp))
+      const [, address, amount] = matched
+      accounts.push({ address, amount })
+    }
+
+    return accounts
+  } catch (error) {
+    console.error(error)
+    throw new InvalidArgumentError("Accepted only format: address_amount,address_amount")
+  }
+}
+
+export const mint = (value: string) => {
+  try {
+    const regexp = /^(\w+)_(\d+)$/g
+
+    const [matched] = Array.from(value.matchAll(regexp))
+    const [, address, cap] = matched
+
+    return { address, cap }
+  } catch (error) {
+    throw new InvalidArgumentError("error")
+  }
+}
+
+export const cw20symbol = (value: string) => {
+  try {
+    return value
+  } catch (error) {
+    throw new InvalidArgumentError("error")
+  }
+}
+
+export const cw20name = (value: string) => {
   try {
     return value
   } catch (error) {

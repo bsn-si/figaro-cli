@@ -47,7 +47,7 @@ export function parse(argv: string[]): CliMethod {
         .addOption(getOption("confirmPublicKey"))
         .addOption(getOption("depositAmount"))
         .addOption(getOption("paymentAmount"))
-        .addOption(getOption("contractCodeId", true))
+        .addOption(getOption("contractCodeId"))
         .action(setParsed("sender")),
     )
     .addCommand(
@@ -137,8 +137,20 @@ export function parse(argv: string[]): CliMethod {
     )
     .addCommand(
       new Command("upload_contract")
-        .description("Upload contract code to node")
+        .description("Upload figaro contract code to node")
         .addOption(getOption("secretKey"))
+        .action(setParsed("common")),
+    )
+    .addCommand(
+      new Command("cw20_instantiate")
+        .description("Basic command for instantite new cw20 contract on node")
+        .addOption(getOption("contractCodeId", true))
+        .addOption(getOption("secretKey"))
+        .addOption(getOption("initial_balances"))
+        .addOption(getOption("minter"))
+        .addOption(getOption("decimals"))
+        .addOption(getOption("symbol"))
+        .addOption(getOption("name"))
         .action(setParsed("common")),
     )
     .addCommand(

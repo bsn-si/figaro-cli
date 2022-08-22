@@ -69,6 +69,15 @@ By default you can finds config for cli in `~/.figaro/config.json`, and have the
 
 Also you can set data directory by environment variable `DATA_DIR`, this can be used for different networks or databases.
 
+## Tests
+In `test` folder you find simple e2e test script for test all features of contract. From instantiate new cw20 token to confirm delivery by courier.
+
+``` bash
+cd test/
+chmod +x test.sh
+./test.sh
+```
+
 ## Usage
 Please use `--help` to get info about all commands & options.
 
@@ -207,6 +216,19 @@ Result              {
   "deposit": "200",
   "payment": "200"
 }
+```
+
+#### Instantiate new CW20 contract
+Also you can instantiate new cw20 token from cli.
+
+``` bash
+figaro-cli common cw20_instantiate \
+  --secret 0x6bead0e84230da9ee73ec5b151776a871ef50a3da1660a32c79b4735d6219103 \
+  --initial-balances wasm1xyuvrj4wrqr40es6pxpxh67fz69uuhp4musjnp_1000000,wasm1m7n94k95yt3ha26eqme5f55pclyypmhrpljpuq_1000000 \
+  --minter wasm1xyuvrj4wrqr40es6pxpxh67fz69uuhp4musjnp_99900000000 \
+  --decimals 6 \
+  --symbol TOK \
+  --name Token
 ```
 
 ### Sender

@@ -108,7 +108,7 @@ export async function make_deposit({ secret: signer, contract, json }: MakeDepos
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
-      ["Logs", JSON.stringify(logs, null, 2)],
+      ["Logs",  logs],
     ], json),
   )
 }
@@ -131,7 +131,7 @@ export async function accept_request({ secret: signer, contract, json }: AcceptR
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
-      ["Logs", JSON.stringify(logs, null, 2)],
+      ["Logs",  logs],
     ], json),
   )
 }
@@ -164,7 +164,7 @@ export async function confirm_delivery({
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
-      ["Logs", JSON.stringify(logs, null, 2)],
+      ["Logs",  logs],
     ], json),
   )
 }

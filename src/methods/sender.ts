@@ -91,7 +91,7 @@ export async function make_payment({ secret: signer, contract, json }: MakePayme
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
-      ["Logs", JSON.stringify(logs, null, 2)],
+      ["Logs", logs],
     ], json),
   )
 }
@@ -128,7 +128,7 @@ export async function set_details({
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
-      ["Logs", JSON.stringify(logs, null, 2)],
+      ["Logs",  logs],
     ], json),
   )
 }
@@ -151,7 +151,7 @@ export async function approve_parcel_issued({ secret: signer, contract, json }: 
       ["Contract Address", contract],
       ["Transaction Hash", transactionHash],
       ["Gas Used", gasUsed.toString()],
-      ["Logs", JSON.stringify(logs, null, 2)],
+      ["Logs",  logs],
     ], json),
   )
 }

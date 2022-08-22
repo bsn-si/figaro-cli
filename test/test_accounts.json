@@ -1,0 +1,27 @@
+[
+  {
+    "name": "fred",
+    "type": "local",
+    "address": "wasm1du0rpzhq0tle5gz35ctvcmx3anx4v8fyvkqeny",
+    "pubkey": "0x03a01544b4f2523aaf9ac889d89a49d11fcd3ad09a4d962dc6f4fa6519277b9620",
+    "privkey": "0xd1326af99088846451f1eb5eab2892ff5c325c962d76d0e1def0866027ab1a82",
+    "mnemonic": "goddess climb congress nut cover industry blast garlic canal person balcony green zone crystal assume saddle taxi pony trophy vocal napkin enact bar relief"
+  },
+
+  {
+    "name": "alice",
+    "type": "local",
+    "address": "wasm1xyuvrj4wrqr40es6pxpxh67fz69uuhp4musjnp",
+    "privkey": "0x6bead0e84230da9ee73ec5b151776a871ef50a3da1660a32c79b4735d6219103",
+    "pubkey": "0x03678b9fe66df3403176ce96b041a004d5d8d8996783083b2a2c813ff17f90aaee",
+    "mnemonic": "industry bitter blanket magic hedgehog firm rich toss intact leader rain excuse version mimic smart crime patrol slot mosquito false level steak barely before"
+  },
+  {
+    "name": "charlie",
+    "type": "local",
+    "address": "wasm1m7n94k95yt3ha26eqme5f55pclyypmhrpljpuq",
+    "pubkey": "0x03d6e1b60ea9e229fc674ed9f9c58aa52609d0b3e6cfb621ac8c75cd5ae98d68fb",
+    "privkey": "0x15b81b6873978c1210f0bffd321095b71a60993886b936ece471236c9f3625c9",
+    "mnemonic": "indoor armor weird hold rice state truly main vacuum fitness excess garden jazz rather wisdom tank supreme accuse march moment relief pole senior cliff"
+  }
+]
