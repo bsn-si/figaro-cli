@@ -7,7 +7,7 @@
     🎟️ ✨ Figaro CLI Client 🎁 👛
 </h1>
 
-figaro smartcontract CLI management tool.
+Figaro smartcontract CLI management tool.
 
 ## Install && Usage
 
@@ -18,7 +18,7 @@ cd figaro-cli/ && npm run install:global
 ```
 `Tested on MacOS & Linux`
 
-Also you can run cli from docker.
+Also you can run cli from the docker.
 
 ``` bash
 git clone git@github.com:bsn-si/figaro-cli.git
@@ -32,7 +32,7 @@ alias figaro-cli="docker run --restart always --network host -v ~/.figaro:/root/
 figaro-cli --help
 ```
 
-Or generate single binary bundle of cli, via `node-pkg`. (You can mofify targets in package.json, or run custom command manually)
+Or generate single binary bundle of CLI via `node-pkg`. (You can mofify targets in package.json, or run custom command manually)
 
 ``` bash
 npm run build:bundle
@@ -40,10 +40,10 @@ npm run build:bundle
 
 ## Before interaction
 For some operations a node RPC is needed, by default `http://127.0.0.1:26657` is used.
-For install local node please follow installation instructions provided [here](https://docs.cosmwasm.com/docs/1.0/getting-started/installation). Also we have simple helper script for configure `wasmd` [here](https://github.com/bsn-si/figaro-contract/blob/main/common/setup.sh).
+To install local node please follow installation instructions provided [here](https://docs.cosmwasm.com/docs/1.0/getting-started/installation). Also we have simple helper script to configure `wasmd` [here](https://github.com/bsn-si/figaro-contract/blob/main/common/setup.sh).
 
 ### Config
-By default you can finds config for cli in `~/.figaro/config.json`, and have these options
+By default you can finds config for CLI in `~/.figaro/config.json`, and have these options
 
 ``` js
 {
@@ -67,10 +67,10 @@ By default you can finds config for cli in `~/.figaro/config.json`, and have the
 }
 ```
 
-Also you can set data directory by environment variable `DATA_DIR`, this can be used for different networks or databases.
+Also you can set data directory with environment variable `DATA_DIR`, this can be used for different networks or databases.
 
 ## Tests
-In `test` folder you find simple e2e test script for test all features of contract. From instantiate new cw20 token to confirm delivery by courier.
+In the `test` folder you'll find a simple e2e test script for testing all features of the contract. From instantiating a new cw20 token to confirmation of a delivery by a courier.
 
 ``` bash
 cd test/
@@ -85,7 +85,7 @@ Please use `--help` to get info about all commands & options.
 ➜  ~ figaro-cli 
 Usage: figaro-cli [options] [command]
 
-Tool for interact with figaro - manage requests & delivery
+A tool to interact with Figaro - manage requests & delivery
 
 Options:
   --json          Output all results as json
@@ -93,16 +93,16 @@ Options:
   -h, --help      display help for command
 
 Commands:
-  sender          Interact as sender
-  courier         Interact as courier
+  sender          Interact as a sender
+  courier         Interact as a courier
   common          Shared command & contract query for everyone
   help [command]  display help for command
 ```
 
 ### Helpers
 
-#### Convert mnemonic to secp256k1 hex
-After type `figaro-cli common mnemonic_to_hex` you need enter mnemonic to prompt, after that you give hex codes.
+#### Convert mnemonic to `secp256k1` hex
+After typing `figaro-cli common mnemonic_to_hex` you need enter mnemonic to prompt, after that you give hex codes.
 
 ``` bash
 figaro-cli common mnemonic_to_hex
@@ -127,7 +127,7 @@ Balance Fee         999030252 ufee
 ```
 
 #### Upload contract code
-Before instantiate contract you need have `code_id` of contract in cosmos. You can get `code_id` when you upload contract to node. For upload figaro contract to node:
+Before instantiating a contract you need to have a `code_id` of the contract in Cosmos. You can get `code_id` when you upload contract to a node. To upload the Figaro contract to a node:
 
 ``` bash
 figaro-cli common upload_contract \
@@ -140,7 +140,7 @@ Gas Used            1930812
 ```
 
 #### Base information about contract
-Also you can request information from contract about current status, locations, applied courier, etc.
+Also you can request information from the contract about current status, locations, applied courier, etc.
 
 _status_
 
@@ -219,7 +219,7 @@ Result              {
 ```
 
 #### Instantiate new CW20 contract
-Also you can instantiate new cw20 token from cli.
+Also you can instantiate a new cw20 token from the CLI
 
 ``` bash
 figaro-cli common cw20_instantiate \
@@ -234,11 +234,11 @@ figaro-cli common cw20_instantiate \
 ### Sender
 
 #### Instantiate/Make new request for delivery
-This command creates a new instance of the figaro delivery contract. In it, you specify the starting options that cannot be changed later - the amount of payment for delivery, the required deposit from the courier, the address of the cw20 token or tokens that inherit it (for example, tgrade), as well as the "approximate" location of the zone from where and where the delivery will be made.
+This command creates a new instance of the Figaro delivery contract. You have to specify starting options that cannot be changed later - an amount of payment for the delivery, a required deposit from the courier, an address of the cw20 token or tokens that inherit it (for example, Tgrade), as well as approximate locations of the zones "from" and "to" where the delivery will be made.
 
 The delivery zone format is a rectangle created from two geo coordinates. `lng,lat|lng,lat` or `0.0,0.0|0.0,0.0`.
 
-Also here you specify the secp256k1 public key from the secret verification key that you will give to the recipient. Or you can pass that option and command generate secret & public key for this contract.
+Also here you specify a `secp256k1` public key from the secret verification key that you will give to the recipient. Or you can pass that option and command will generate secret & public key for this contract.
 
 ``` bash
 figaro-cli sender instantiate \
@@ -258,7 +258,7 @@ Gas Used            273741
 ```
 
 #### Make payment
-After instantiate, before find couriers you need pay for request (This is part of the guarantee mechanism).
+Before searching for couriers you need to pay for this request (This is a part of the guarantee mechanism).
 
 _Disclaimer: this command automatically requests permission to withdraw funds from your wallet._  
 
@@ -277,7 +277,7 @@ Logs                [
 ```
 
 #### Set details
-after the courier has made a deposit, you need to enter the exact locations and comment on the delivery where the courier should come to pick up the parcel.
+After a courier has made his deposit, you need to enter the exact locations and comment on the delivery where the courier should come to pick up the parcel.
 
 
 ``` bash
@@ -288,7 +288,7 @@ figaro-cli sender set_details \
 --location-to 2.0,2.0 \
 --comment Comment!   
    
-Set department and destination details
+Set destination details
 Contract Address    wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs 
 Transaction Hash    0C927B477BD5A6721C8BD9C4C759FB8CF68791780B93543DDB35B57DBA34C65D 
 Gas Used            149073 
@@ -298,7 +298,7 @@ Logs                [
 ```
 
 #### Parcel issued to the courier
-Сommand to confirm that the package has been issued to the courier.
+Сommand to confirm that the package has been passed to the courier.
 
 
 ``` bash
@@ -306,7 +306,7 @@ figaro-cli sender approve_parcel_issued \
   --secret 0xd1326af99088846451f1eb5eab2892ff5c325c962d76d0e1def0866027ab1a82 \
   --contract wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs
   
-Parcel delivered to courier
+Parcel passed to the courier
 Contract Address    wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs 
 Transaction Hash    B6E7B2F57365BEE4708871E59A7636411A82067626273F0612A2F837D882C72F 
 Gas Used            138461 
@@ -316,9 +316,9 @@ Logs                [
 ```
 
 #### Cancel delivery
-Command for cancel delivery
+Command for cancelling delivery
 
-_Disclaimer: After canceling request on your part, depending on the status and the deadlines set in the settings, you may lose funds._
+_Disclaimer: After cancelling request on your side, depending on the status and the deadlines set in the settings, you may lose funds._
 
 ``` bash
 figaro-cli courier cancel_delivery \
@@ -337,7 +337,7 @@ Logs                [
 ### Courier
 
 #### Accept Application
-For accept request you need have target contract address.
+To accept request you need to have a target contract address.
 
 ``` bash
 figaro-cli courier accept_request \
@@ -354,7 +354,7 @@ Logs                [
 ```
 
 #### Make deposit
-After accept, courier need enter deposit to contract (This is part of the guarantee mechanism).
+After acceptance the courier needs to make a deposit to the contract (This is part of the guarantee mechanism).
 
 _Disclaimer: this command automatically requests permission to withdraw funds from your wallet._  
 
@@ -363,7 +363,7 @@ figaro-cli courier make_deposit \
   --secret 0x6bead0e84230da9ee73ec5b151776a871ef50a3da1660a32c79b4735d6219103 \
   --contract wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs
 
-Delivery make payment
+Delivery payment
 Contract Address    wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs 
 Transaction Hash    FFADDDF4AAEE35DAAB68E4EE49016DBE0E6CD0C8666A887139DCE59662303D31 
 Gas Used            299778 
@@ -373,7 +373,7 @@ Logs                [
 ```
 
 #### Confirm delivery
-Command for confirm delivery and get payment by code.
+Confirmation of the delivery and request for the payment
 
 ``` bash
 figaro-cli courier confirm_delivery \
@@ -381,7 +381,7 @@ figaro-cli courier confirm_delivery \
   --contract wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs \
   --confirm-private 0x6bead0e84230da9ee73ec5b151776a871ef50a3da1660a32c79b4735d6219103
 
-Confirm delivery, payout successful
+Delivery confirmed, payout successful
 Contract Address    wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs 
 Transaction Hash    6D9AC7A60F13FB976B57209DC728E205004319371038165A2ED63B16F30B818A 
 Gas Used            220343 
@@ -391,9 +391,9 @@ Logs                [
 ```
 
 #### Cancel delivery
-Command for cancel delivery
+Command for cancelling delivery
 
-_Disclaimer: Please note that depending on the status of the delivery, you may lose the deposit if the package has already been issued to you - but has not been delivered._
+_Disclaimer: Please note that depending on the status of the delivery, you may lose the deposit if the package has already been passed to you, but has not been delivered._
 
 ``` bash
 figaro-cli courier cancel_delivery \
