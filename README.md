@@ -16,7 +16,8 @@ To give access to `figaro-cli` command in your environment:
 git clone git@github.com:bsn-si/figaro-cli.git
 cd figaro-cli/ && npm run install:global
 ```
-`Tested on MacOS & Linux`
+
+`Tested on MacOS & Linux, with wasmd-0.27+ and nodejs 16.0`
 
 Also you can run cli from the docker.
 
