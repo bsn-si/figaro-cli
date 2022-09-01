@@ -70,6 +70,24 @@ By default you can finds config for CLI in `~/.figaro/config.json`, and have the
 
 Also you can set data directory with environment variable `DATA_DIR`, this can be used for different networks or databases.
 
+*Example config for Malaga testnet*
+
+``` js
+{
+  "logging": true,
+  "trace": true,
+  "apiUrl": "https://rpc.malaga-420.cosmwasm.com/",
+  "addressPrefix": "wasm",
+  "display": {
+    "bech32": true
+  },
+  "units": {
+    "stake": "uand",
+    "fee": "umlg"
+  }
+}
+```
+
 ## Tests
 In the `test` folder you'll find a simple e2e test script for testing all features of the contract. From instantiating a new cw20 token to confirmation of a delivery by a courier.
 
