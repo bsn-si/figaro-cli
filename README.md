@@ -267,7 +267,7 @@ figaro-cli sender make_payment \
   --secret 0xd1326af99088846451f1eb5eab2892ff5c325c962d76d0e1def0866027ab1a82 \
   --contract wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs
 
-Delivery make payment
+Delivery payment
 Contract Address    wasm1vhndln95yd7rngslzvf6sax6axcshkxqpmpr886ntelh28p9ghuq0rxlxs 
 Transaction Hash    E8BD43CD7F7DB2BD894E6993A707E0CAD6F17EA9BB187A11838D5C53AA6755C8 
 Gas Used            288144 

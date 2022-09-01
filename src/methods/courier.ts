@@ -101,7 +101,7 @@ export async function make_deposit({ secret: signer, contract, json }: MakeDepos
     "deposit",
   )
 
-  !json && log(chalk.bold.bgBlue("Delivery make payment"))
+  !json && log(chalk.bold.bgBlue("Delivery payment"))
 
   log(
     fmtList([
@@ -157,7 +157,7 @@ export async function confirm_delivery({
     "auto",
   )
 
-  !json && log(chalk.bold.bgBlue("Confirm delivery, payout successful"))
+  !json && log(chalk.bold.bgBlue("Delivery confirmed, payout successful"))
 
   log(
     fmtList([

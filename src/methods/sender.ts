@@ -84,7 +84,7 @@ export async function instantiate({
 
 export async function make_payment({ secret: signer, contract, json }: MakePaymentOptions) {
   const { transactionHash, gasUsed, logs } = await payToContract(signer, contract, "payment")
-  !json && log(chalk.bold.bgBlue("Delivery make payment"))
+  !json && log(chalk.bold.bgBlue("Delivery payment"))
 
   log(
     fmtList([
@@ -121,7 +121,7 @@ export async function set_details({
 
   const { gasUsed, transactionHash, logs } = await client.execute(address, contract, msg, "auto")
   
-  !json && log(chalk.bold.bgBlue("Set department and destination details"))
+  !json && log(chalk.bold.bgBlue("Set destination details"))
 
   log(
     fmtList([
@@ -144,7 +144,7 @@ export async function approve_parcel_issued({ secret: signer, contract, json }: 
     "auto",
   )
 
-  !json && log(chalk.bold.bgBlue("Parcel delivered to courier"))
+  !json && log(chalk.bold.bgBlue("Parcel passed to the courier"))
 
   log(
     fmtList([
