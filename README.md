@@ -4,10 +4,10 @@
 > **Use at your own risk**.
 
 <h1 align="center">
-    🎟️ ✨ Figaro CLI Client 🎁 👛
+    🎟️ ✨ Figaro CLI test tool 🎁 👛
 </h1>
 
-Figaro smartcontract CLI management tool.
+Figaro smartcontract test tool.
 
 ## Related repositories
 - Figaro CosmWasm [smart contract](https://github.com/bsn-si/figaro-contract)
@@ -22,7 +22,7 @@ cd figaro-cli/ && npm run install:global
 
 `Tested on MacOS & Linux, with wasmd-0.27+ and nodejs 16.0`
 
-Also you can run cli from the docker.
+Also you can run CLI from the docker:
 
 ``` bash
 git clone git@github.com:bsn-si/figaro-cli.git
@@ -36,7 +36,7 @@ alias figaro-cli="docker run --restart always --network host -v ~/.figaro:/root/
 figaro-cli --help
 ```
 
-Or generate single binary bundle of CLI via `node-pkg`. (You can mofify targets in package.json, or run custom command manually)
+Or generate single binary bundle of the CLI tool via `node-pkg`. (You can modify targets in package.json, or run a custom command manually)
 
 ``` bash
 npm run build:bundle
@@ -44,10 +44,10 @@ npm run build:bundle
 
 ## Before interaction
 For some operations a node RPC is needed, by default `http://127.0.0.1:26657` is used.
-To install local node please follow installation instructions provided [here](https://docs.cosmwasm.com/docs/1.0/getting-started/installation). Also we have simple helper script to configure `wasmd` [here](https://github.com/bsn-si/figaro-contract/blob/main/common/setup.sh).
+To install a local node please follow installation instructions provided [here](https://docs.cosmwasm.com/docs/1.0/getting-started/installation). Also we have a simple helper script to configure `wasmd` [here](https://github.com/bsn-si/figaro-contract/blob/main/common/setup.sh).
 
 ### Config
-By default you can finds config for CLI in `~/.figaro/config.json`, and have these options
+By default you can find a config for the CLI tool in `~/.figaro/config.json` and have these options:
 
 ``` js
 {
@@ -92,7 +92,7 @@ Also you can set data directory with environment variable `DATA_DIR`, this can b
 ```
 
 ## Tests
-In the `test` folder you'll find a simple e2e test script for testing all features of the contract. From instantiating a new cw20 token to confirmation of a delivery by a courier.
+In the `test` folder you'll find a simple e2e test script for running all features of the contract: from instantiating a new cw20 token to confirmation of a delivery by a courier.
 
 ``` bash
 cd test/
@@ -107,10 +107,10 @@ Please use `--help` to get info about all commands & options.
 ➜  ~ figaro-cli 
 Usage: figaro-cli [options] [command]
 
-A tool to interact with Figaro - manage requests & delivery
+A tool to interact with Figaro: manage requests & delivery
 
 Options:
-  --json          Output all results as json
+  --json          output all results as json
   -V, --version   output the version number
   -h, --help      display help for command
 
@@ -136,7 +136,7 @@ Public Key          0x03a01544b4f2523aaf9ac889d89a49d11fcd3ad09a4d962dc6f4fa6519
 ```
 
 #### Get account balance
-With this command you can get balance of signer account (by `--secret` option), or by address with option `--address` in bech32
+With this command you can get balance of the signer's account (by `--secret` option), or by address with option `--address` in bech32
 
 ``` bash
 figaro-cli common balance \
@@ -340,7 +340,7 @@ Logs                [
 #### Cancel delivery
 Command for cancelling delivery
 
-_Disclaimer: After cancelling request on your side, depending on the status and the deadlines set in the settings, you may lose funds._
+_Disclaimer: After cancelling request on your side depending on the status and the deadlines set you may lose funds._
 
 ``` bash
 figaro-cli courier cancel_delivery \
@@ -413,9 +413,9 @@ Logs                [
 ```
 
 #### Cancel delivery
-Command for cancelling delivery
+Command for cancelling a delivery
 
-_Disclaimer: Please note that depending on the status of the delivery, you may lose the deposit if the package has already been passed to you, but has not been delivered._
+_Disclaimer: Please note that depending on the status of the delivery you may lose the deposit if the package has already been passed to you, but has not been delivered._
 
 ``` bash
 figaro-cli courier cancel_delivery \
