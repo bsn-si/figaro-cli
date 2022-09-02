@@ -9,6 +9,9 @@
 
 Figaro smartcontract CLI management tool.
 
+## Related repositories
+- Figaro CosmWasm [smart contract](https://github.com/bsn-si/figaro-contract)
+
 ## Install && Usage
 
 To give access to `figaro-cli` command in your environment:
@@ -427,6 +430,3 @@ Logs                [
   # ...detailed transaction logs
 ]
 ```
-
-# Related repositories
-- Figaro CosmWasm [smart contract](https://github.com/bsn-si/figaro-contract)
