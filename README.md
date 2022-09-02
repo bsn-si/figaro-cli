@@ -427,3 +427,6 @@ Logs                [
   # ...detailed transaction logs
 ]
 ```
+
+# Related repositories
+- Figaro CosmWasm [smart contract](https://github.com/bsn-si/figaro-contract)
